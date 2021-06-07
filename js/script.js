@@ -12,49 +12,45 @@ project 1 - A Random Quote Generator
 ***/
 
 // this array is used as a "master list" for the quotes
-let allQuotes = [
-  quote1 = {
+let quotes = [
+  {
     'quote': 'Once more unto the breach.',
     'source': 'Shakespeare | Henry V',
     'tags': 'literature',
     'color': '#839D9A'
   },
-  quote2 = {
+  {
     'quote': 'Any fool can criticize, condemn, and complain — and most fools do.',
     'source': 'Dale Carnegie',
     'tag': 'witticism',
     'color': '#D9F4C7'
   },
-  quote3 = {
+  {
     'quote': 'We cannot solve our problems with the same thinking we used when we created them.',
     'source': 'Albert Einstein',
     'tag': "historical figure",
     'color': '#71677C'
   },
-  quote4 = {
+  {
     'quote': 'Choose a job you love, and you will never have to work a day in your life.',
     'source': 'Confucius',
     'tag': 'historical figure',
     'color': '#4B3B40'
 
   },
-  quote5 = {
+  {
     'quote': 'Strength above all.',
     'source': 'Darius | league of legends',
     'citation': 'Riot Games',
     'color': '#7EA2AA'
   },
-  quote6 = {
+  {
     'quote': `Had to have high, high hopes for a living`,
     'source': 'Panic at the Disco | High High Hopes',
     'year': '2018',
     'color': '#E7CEE3'
   },
 ]
-
-//empty array that will be used on the below code. The allQuotes array items will be pushed to this second array and then items will
-//be removed from this array to avoid duplicates
-let quotes = [];
 
 
 /***
@@ -64,7 +60,6 @@ const getRandomQuote = (quotes) =>{
   //get random number between 0 and quotes.length();
   randomNum = Math.floor(Math.random()*(quotes.length-1));
   randomQuote = quotes[randomNum];
-  quotes.splice(randomNum, 1); // remove quote from second array to avoid duplicates
   return randomQuote;
 }
 
@@ -85,9 +80,6 @@ const createElement = function(elementName, className, textContent){
 let timeout; //variable created for the setTimeout function, used to cause the quotes to rotate out automatically after 5 sec
 
 const printQuote = () => {
-  if (quotes.length === 0){ //push all quotes in the main quote array into the empty array. Quotes will be removed from the second array when used to avoid duplicates
-    quotes.push(...allQuotes)
-  }
   let quoteBox = document.querySelector('#quote-box');
   let randomQuote = getRandomQuote(quotes);
 
