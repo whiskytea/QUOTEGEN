@@ -10,6 +10,8 @@ project 1 - A Random Quote Generator
 /*** 
  * `quotes` array 
 ***/
+
+// this array is used as a "master list" for the quotes
 let allQuotes = [
   quote1 = {
     'quote': 'Once more unto the breach.',
@@ -50,6 +52,8 @@ let allQuotes = [
   },
 ]
 
+//empty array that will be used on the below code. The allQuotes array items will be pushed to this second array and then items will
+//be removed from this array to avoid duplicates
 let quotes = [];
 
 
@@ -58,9 +62,9 @@ let quotes = [];
 ***/
 const getRandomQuote = (quotes) =>{
   //get random number between 0 and quotes.length();
-  randomNum = Math.floor(Math.random()*((quotes.length-1)-0));
+  randomNum = Math.floor(Math.random()*(quotes.length-1));
   randomQuote = quotes[randomNum];
-  quotes.splice(randomNum, 1);
+  quotes.splice(randomNum, 1); // remove quote from second array to avoid duplicates
   return randomQuote;
 }
 
@@ -68,7 +72,7 @@ const getRandomQuote = (quotes) =>{
  * `printQuote` function
 ***/
 
-//FOR THE INSTRUCTORS: the instructions for this lesson watned us to use innerHTML
+//FOR THE INSTRUCTORS: the instructions for this lesson wanted us to use innerHTML
 //I have chosen to use createElement again as that is a better programming practice to learn
 //for the sake of security and page performance
 const createElement = function(elementName, className, textContent){
@@ -78,17 +82,21 @@ const createElement = function(elementName, className, textContent){
   return element;
 }
 
-let timeout;
+let timeout; //variable created for the setTimeout function, used to cause the quotes to rotate out automatically after 5 sec
 
 const printQuote = () => {
-  if (quotes.length === 0){
+  if (quotes.length === 0){ //push all quotes in the main quote array into the empty array. Quotes will be removed from the second array when used to avoid duplicates
     quotes.push(...allQuotes)
   }
   let quoteBox = document.querySelector('#quote-box');
   let randomQuote = getRandomQuote(quotes);
+
+  // looks at the quoteBox children and removes any that exist, so they can be replaced by the new quote
   while (quoteBox.firstChild) { 
     quoteBox.removeChild(quoteBox.firstChild)
   }
+
+  //creates the HTML elemnts that will fill the quoteBox with the quote information
   quoteBox.appendChild(createElement('p', 'quote', randomQuote['quote']));
   quoteBox.appendChild(createElement('p', 'source', randomQuote['source']));
   if (randomQuote['tag']){
@@ -103,11 +111,11 @@ const printQuote = () => {
 
   
   document.body.style.backgroundColor = randomQuote['color'];
-  //creates the automatic transition of quotes after 5 seconds, and includes a clear option if the button was clicked
-  // if (timeout){ 
-  //   clearTimeout(timeout);
-  // }
-  // timeout = setTimeout(() => printQuote(), 5000)
+  // creates the automatic transition of quotes after 5 seconds, and includes a clear option if the button was clicked
+  if (timeout){ 
+    clearTimeout(timeout);
+  }
+  timeout = setTimeout(() => printQuote(), 5000)
 }
 
 printQuote(); //loads a quote from the quotes array on page load
