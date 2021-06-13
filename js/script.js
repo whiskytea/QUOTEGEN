@@ -68,8 +68,7 @@ const getRandomQuote = (quotes) =>{
 ***/
 
 //FOR THE INSTRUCTORS: the instructions for this lesson wanted us to use innerHTML
-//I have chosen to use createElement again as that is a better programming practice to learn
-//for the sake of security and page performance
+//I have chosen to use createElement as that is a better programming practice to learn for the sake of security and page performance
 const createElement = function(elementName, className, textContent){
   let element = document.createElement(elementName);
   element.className = className;
