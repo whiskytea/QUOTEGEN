@@ -11,7 +11,6 @@ project 1 - A Random Quote Generator
  * `quotes` array 
 ***/
 
-// this array is used as a "master list" for the quotes
 let quotes = [
   {
     'quote': 'Once more unto the breach.',
@@ -52,7 +51,6 @@ let quotes = [
   },
 ]
 
-
 /***
  * `getRandomQuote` function
 ***/
@@ -67,41 +65,43 @@ const getRandomQuote = (quotes) =>{
  * `printQuote` function
 ***/
 
-//FOR THE INSTRUCTORS: the instructions for this lesson wanted us to use innerHTML
-//I have chosen to use createElement as that is a better programming practice to learn for the sake of security and page performance
-const createElement = function(elementName, className, textContent){
-  let element = document.createElement(elementName);
-  element.className = className;
-  element.textContent = textContent;
-  return element;
-}
-
-let timeout; //variable created for the setTimeout function, used to cause the quotes to rotate out automatically after 5 sec
+// function that creates an HTML element - takes a class name and one of a quote object key's value as paramaters
+const createElement = function(className, textContent){
+  return `<p class= ${className}>${textContent}</p>`
+ }
 
 const printQuote = () => {
-  let quoteBox = document.querySelector('#quote-box');
-  let randomQuote = getRandomQuote(quotes);
-
-  // looks at the quoteBox children and removes any that exist, so they can be replaced by the new quote
-  while (quoteBox.firstChild) { 
-    quoteBox.removeChild(quoteBox.firstChild)
-  }
-
-  //creates the HTML elemnts that will fill the quoteBox with the quote information
-  quoteBox.appendChild(createElement('p', 'quote', randomQuote['quote']));
-  quoteBox.appendChild(createElement('p', 'source', randomQuote['source']));
-  if (randomQuote['tag']){
-    quoteBox.appendChild(createElement('p', 'tag', randomQuote['tag']));
-  };
-  if (randomQuote['citation']){
-    quoteBox.appendChild(createElement('p', 'citation', randomQuote['citation']));
-  };
-  if (randomQuote['year']){
-    quoteBox.appendChild(createElement('p', 'year', randomQuote['year']));
-  }
-
   
+  let quoteBox = document.querySelector('#quote-box'); //snag the quoteBox code from the HTML document
+  let randomQuote = getRandomQuote(quotes); //select a random quote from the array
+
+  // this code deals with all the "non-essential" information for a quote: tag name, citation, year
+  let tag = '';
+  let citation = '';
+  let year = '';
+
+  if (randomQuote['tag']){
+    tag = createElement('tag', randomQuote['tag'])
+  }
+  if (randomQuote['citation']){
+    citation = createElement('citation', randomQuote['citation']);
+  }
+  if (randomQuote['year']){
+    year = createElement('tag', 'year', randomQuote['year']);
+  }
+
+  //builds the HTML code to display the quote to the page
+  quoteBox.innerHTML = `
+    ${createElement('quote', randomQuote['quote'])}
+    ${createElement('source', randomQuote['source'])}
+    ${tag}${year}${citation}
+  `
+  
+  //change the background color when the quote changes
   document.body.style.backgroundColor = randomQuote['color'];
+
+  let timeout; //variable created for the setTimeout function, used to cause the quotes to rotate out automatically after 5 sec
+
   // creates the automatic transition of quotes after 5 seconds, and includes a clear option if the button was clicked
   if (timeout){ 
     clearTimeout(timeout);
